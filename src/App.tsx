@@ -1,4 +1,4 @@
-import logo from "./logo.svg"
+import logo from "./assets/undraw_weather_app_re_kcb1-2.svg"
 import "./App.css"
 
 function App() {
