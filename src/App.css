@@ -1,17 +1,17 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 h1 {
   font-size: 30px;
+  margin-bottom: 14px;
 }
 
 h2 {
   font-size: 26px;
-}
-
-.app {
-  text-align: center;
-}
-
-.container {
-  text-align: center;
+  margin-bottom: 12px;
 }
 
 .wrapper {
@@ -29,17 +29,15 @@ h2 {
 .main {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.125);
   border-radius: 8px;
-  padding: 24px 64px 16px;
+  padding: 24px;
   background-color: #1d2025;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.logo {
-  height: 280px;
-  pointer-events: none;
-  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.125));
+.section-wrapper {
+  margin-bottom: 20px;
 }
 
 .items {
