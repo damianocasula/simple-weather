@@ -13,22 +13,49 @@ type Weather = {
 } | null
 
 const DEFAULT_COORDS = {
-  lat: 48.13743,
-  lon: 11.57549,
+  lat: 47.2344,
+  lon: 16.3667,
 }
 
 function getUserLocation(): Coordinates {
-  if ("geolocation" in navigator) {
+  let userCoords = DEFAULT_COORDS
+
+  if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
-      (position) => position.coords,
+      (position) => {
+        // assign user coords
+        // FIXME: this is not working
+        userCoords = {
+          lat: position.coords.latitude,
+          lon: position.coords.longitude,
+        }
+      },
       (error) => {
         console.error(error)
-        return DEFAULT_COORDS
+        // TODO: fetch user location by IP
+        // fetch("https://ip-api.com/json")
+        //   .then((response) => response.json())
+        //   .then((data) => {
+        //     userCoords = {
+        //       lat: data.lat,
+        //       lon: data.lon,
+        //     }
+        //   })
       }
+    )
+
+    console.log(
+      "🚀 ~ file: App.tsx:32 ~ getUserLocation ~ userCoords:",
+      userCoords
     )
   }
 
-  return DEFAULT_COORDS
+  console.log(
+    "🚀 ~ file: App.tsx:35 ~ getUserLocation ~ userCoords:",
+    userCoords
+  )
+
+  return userCoords
 }
 
 async function getWeather({ lat, lon }: Coordinates) {
