@@ -85,7 +85,7 @@ const ROADMAP = [
   "Display error messages",
   "Search autocomplete",
   "Display weather forecast for the next 24 hours",
-  "Display weather forecast for the next 7 days",
+  "Display weather forecast for the next 7 days (using timezones api to automatically resolve coordinates to timezones)",
   "Fahrenheit/Celsius switch",
 ]
 
