@@ -22,11 +22,45 @@
   border-radius: 8px;
   padding: 24px 64px 16px;
   background-color: #1d2025;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .logo {
   height: 280px;
   pointer-events: none;
   filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.125));
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+
+  background-color: #363636;
+  padding: 8px;
+  border-radius: 4px;
+  border: 2px solid #5c5c5c;
+}
+
+/* Location */
+.location__item {
+  background-color: #00476b;
+  border-color: #017ab7;
+}
+
+/* Weather */
+.weather__item {
+  background-color: #00006c;
+  border-color: #0101b8;
 }
 
