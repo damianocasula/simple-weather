@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react"
-import logo from "./assets/undraw_weather_app_re_kcb1-2.svg"
 import "./App.css"
 
 type Coordinates = {
@@ -48,6 +47,23 @@ async function getWeather({ lat, lon }: Coordinates) {
   return response.json()
 }
 
+const ROADMAP = [
+  "Show location name",
+  "Weather conditions (sunny, cloudy, rainy, etc.)",
+  "Show humidity",
+  "Show wind speed",
+  "Show wind direction",
+  "Show name of place",
+  "Show precipitation",
+  "Display weather icon depending on weather condition",
+  "Search for location with debounce",
+  "Display loading indicator/spinner",
+  "Display error messages",
+  "Search autocomplete",
+  "Display weather forecast for the next 24 hours",
+  "Display weather forecast for the next 7 days",
+]
+
 function App() {
   const [weather, setWeather] = useState<Weather>(null)
   const [loading, setLoading] = useState(false)
@@ -74,13 +90,12 @@ function App() {
     <div className="app">
       <div className="wrapper">
         <main className="main">
-          <img src={logo} className="logo" alt="logo" />
-          <p>Just Another Simple Weather App</p>
+          <h1>Simple Weather</h1>
 
           {loading && <p>Loading...</p>}
 
           {location && (
-            <section className="section location__section">
+            <section className="items location__section">
               <div className="item location__item">
                 <div className="location__label">Latitude:</div>
                 <div className="location__value">{location.lat}</div>
@@ -93,7 +108,7 @@ function App() {
           )}
 
           {weather && (
-            <section className="section weather__section">
+            <section className="items weather__section">
               <div className="item weather__item">
                 <div className="weather__label">Temperature:</div>
                 <div className="weather__value">
@@ -102,6 +117,15 @@ function App() {
               </div>
             </section>
           )}
+
+          <h2>Roadmap</h2>
+          <section className="items roadmap__section">
+            {ROADMAP.map((item, index) => (
+              <div className="item roadmap__item" key={index}>
+                {item}
+              </div>
+            ))}
+          </section>
         </main>
       </div>
     </div>
