@@ -54,6 +54,8 @@ const ROADMAP = [
   "Display weather forecast for the next 24 hours",
   "Display weather forecast for the next 7 days (using timezones api to automatically resolve coordinates to timezones)",
   "Fahrenheit/Celsius switch",
+  "Get compass direction from wind direction",
+  "Add units to weather info values (e.g. km/h, m/s, etc.)",
 ]
 
 function App() {
