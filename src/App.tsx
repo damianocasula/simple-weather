@@ -1,102 +1,42 @@
-import { useEffect, useMemo, useState } from "react"
-import "./App.css"
+import { useEffect, useState } from "react"
+import { WeatherInfo } from "../components"
+import { Coordinates } from "./App.type"
+import { getUserLocation } from "./App.utils"
+import "./App.scss"
 
-type Coordinates = {
-  lat: number
-  lon: number
-}
+const useLocationName = ({ lat, lon }: Coordinates) => {
+  const [locationName, setLocationName] = useState("")
 
-type Weather = {
-  current_weather: {
-    temperature: number
-  }
-} | null
+  useEffect(() => {
+    const url = new URL("https://geocode.maps.co/reverse")
 
-const DEFAULT_COORDS = {
-  lat: 47.2344,
-  lon: 16.3667,
-}
+    url.searchParams.append("lat", lat.toString())
+    url.searchParams.append("lon", lon.toString())
 
-function getUserLocation(): Coordinates {
-  let userCoords = DEFAULT_COORDS
-
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        // assign user coords
-        // FIXME: this is not working
-        userCoords = {
-          lat: position.coords.latitude,
-          lon: position.coords.longitude,
+    fetch(url.toString())
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(response.statusText)
         }
-      },
-      (error) => {
+
+        return response.json()
+      })
+      .then((data) => {
+        if (!data.address) {
+          throw new Error("No address found")
+        }
+
+        const city = data.address.city
+        const country = data.address.state
+
+        setLocationName(`${city}, ${country}`)
+      })
+      .catch((error) => {
         console.error(error)
-        // TODO: fetch user location by IP
-        // fetch("https://ip-api.com/json")
-        //   .then((response) => response.json())
-        //   .then((data) => {
-        //     userCoords = {
-        //       lat: data.lat,
-        //       lon: data.lon,
-        //     }
-        //   })
-      }
-    )
+      })
+  }, [lat, lon])
 
-    console.log(
-      "🚀 ~ file: App.tsx:32 ~ getUserLocation ~ userCoords:",
-      userCoords
-    )
-  }
-
-  console.log(
-    "🚀 ~ file: App.tsx:35 ~ getUserLocation ~ userCoords:",
-    userCoords
-  )
-
-  return userCoords
-}
-
-async function getWeather({ lat, lon }: Coordinates) {
-  const url = new URL("https://api.open-meteo.com/v1/forecast")
-
-  url.searchParams.append("latitude", lat.toString())
-  url.searchParams.append("longitude", lon.toString())
-  url.searchParams.append("current_weather", "true")
-  url.searchParams.append("forecast_days", "1")
-
-  const response = await fetch(url.toString())
-
-  if (!response.ok) {
-    throw new Error(response.statusText)
-  }
-
-  return response.json()
-}
-
-async function getLocationName({ lat, lon }: Coordinates) {
-  const url = new URL("https://geocode.maps.co/reverse")
-
-  url.searchParams.append("lat", lat.toString())
-  url.searchParams.append("lon", lon.toString())
-
-  const response = await fetch(url.toString())
-
-  if (!response.ok) {
-    throw new Error(response.statusText)
-  }
-
-  const data = await response.json()
-
-  if (!data.address) {
-    throw new Error("No address found")
-  }
-
-  const city = data.address.city
-  const country = data.address.state
-
-  return `${city}, ${country}`
+  return locationName
 }
 
 const ROADMAP = [
@@ -117,37 +57,8 @@ const ROADMAP = [
 ]
 
 function App() {
-  const [weather, setWeather] = useState<Weather>(null)
-  const [loading, setLoading] = useState(false)
-  const [locationName, setLocationName] = useState("")
-
-  const location = useMemo(() => getUserLocation(), [])
-
-  useEffect(() => {
-    getLocationName(location)
-      .then((data) => {
-        setLocationName(data)
-        console.log(data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }, [location])
-
-  useEffect(() => {
-    setLoading(true)
-
-    getWeather(location)
-      .then((data) => {
-        setWeather(data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [location])
+  const location = getUserLocation()
+  const locationName = useLocationName(location)
 
   return (
     <div className="app">
@@ -178,20 +89,7 @@ function App() {
             )}
           </div>
 
-          <div className="section-wrapper">
-            <h2>Weather</h2>
-            {loading && <div>Loading...</div>}
-            {weather && (
-              <section className="items weather__section">
-                <div className="item weather__item">
-                  <div className="weather__label">Temperature:</div>
-                  <div className="weather__value">
-                    {weather.current_weather.temperature}°C
-                  </div>
-                </div>
-              </section>
-            )}
-          </div>
+          <WeatherInfo location={location} />
 
           <div className="section-wrapper">
             <h2>Roadmap</h2>
@@ -204,6 +102,10 @@ function App() {
             </section>
           </div>
         </main>
+
+        <footer className="footer">
+          <a href="https://open-meteo.com/">Weather data by Open-Meteo.com</a>
+        </footer>
       </div>
     </div>
   )
