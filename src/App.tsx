@@ -1,12 +1,14 @@
 import { WeatherInfo } from "./components"
-import { getUserLocation, useLocationName } from "./utils"
+import { useGeolocation, useLocationName } from "./utils"
 import "./App.scss"
 
+const DEFAULT_LOCATION = {
+  lat: 47.2344,
+  lon: 16.3667,
+}
+
 const ROADMAP = [
-  "Weather conditions (sunny, cloudy, rainy, etc.)",
   "Show humidity",
-  "Show wind speed",
-  "Show wind direction",
   "Show name of place",
   "Show precipitation",
   "Display weather icon depending on weather condition",
@@ -18,11 +20,10 @@ const ROADMAP = [
   "Display weather forecast for the next 7 days (using timezones api to automatically resolve coordinates to timezones)",
   "Fahrenheit/Celsius switch",
   "Get compass direction from wind direction",
-  "Add units to weather info values (e.g. km/h, m/s, etc.)",
 ]
 
 function App() {
-  const location = getUserLocation()
+  const location = useGeolocation() ?? DEFAULT_LOCATION
   const locationName = useLocationName(location)
 
   return (

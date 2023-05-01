@@ -1,23 +1,27 @@
 import { useEffect, useState } from "react"
 import { Coordinates } from "./types"
 
+// create a function that returns the location of the user using the browser's geolocation API
+export function useGeolocation() {
+  const [location, setLocation] = useState<Coordinates | null>(null)
 
-const DEFAULT_USER_LOCATION = {
-  lat: 47.2344,
-  lon: 16.3667,
-}
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords
 
-export function getUserLocation() {
-  const userLocation = { ...DEFAULT_USER_LOCATION }
+        setLocation({
+          lat: latitude,
+          lon: longitude,
+        })
+      },
+      (error) => {
+        console.error(error)
+      }
+    )
+  }, [])
 
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      userLocation.lat = position.coords.latitude
-      userLocation.lon = position.coords.longitude
-    }, console.error)
-  }
-
-  return userLocation
+  return location
 }
 
 async function reverseGeocode({ lat, lon }: Coordinates) {
