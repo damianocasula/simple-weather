@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { WeatherInfo } from "../components"
+import { WeatherInfo } from "./components"
 import { Coordinates } from "./App.type"
 import { getUserLocation } from "./App.utils"
 import "./App.scss"
