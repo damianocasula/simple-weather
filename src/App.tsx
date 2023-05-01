@@ -1,43 +1,6 @@
-import { useEffect, useState } from "react"
 import { WeatherInfo } from "./components"
-import { Coordinates } from "./types"
-import { getUserLocation } from "./utils"
+import { getUserLocation, useLocationName } from "./utils"
 import "./App.scss"
-
-const useLocationName = ({ lat, lon }: Coordinates) => {
-  const [locationName, setLocationName] = useState("")
-
-  useEffect(() => {
-    const url = new URL("https://geocode.maps.co/reverse")
-
-    url.searchParams.append("lat", lat.toString())
-    url.searchParams.append("lon", lon.toString())
-
-    fetch(url.toString())
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(response.statusText)
-        }
-
-        return response.json()
-      })
-      .then((data) => {
-        if (!data.address) {
-          throw new Error("No address found")
-        }
-
-        const city = data.address.city
-        const country = data.address.state
-
-        setLocationName(`${city}, ${country}`)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-  }, [lat, lon])
-
-  return locationName
-}
 
 const ROADMAP = [
   "Weather conditions (sunny, cloudy, rainy, etc.)",
