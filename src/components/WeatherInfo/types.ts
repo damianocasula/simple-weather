@@ -1,5 +1,6 @@
 import { Coordinates } from "../../types"
 
 export type WeatherInfoProps = {
-  location: Coordinates
+  location: Coordinates,
+  loading: boolean,
 }

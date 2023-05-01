@@ -68,3 +68,4 @@ export const useWeatherData = (location: Coordinates) => {
 
   return weatherData;
 }
+

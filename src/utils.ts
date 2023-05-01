@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { ChangeEventHandler, useEffect, useState } from "react"
 import { Coordinates } from "./types"
 
 // create a function that returns the location of the user using the browser's geolocation API
@@ -62,4 +62,47 @@ export const useLocationName = ({ lat, lon }: Coordinates) => {
   }, [lat, lon])
 
   return locationName
+}
+
+function geocode(locationName: string) {
+  const url = new URL("https://geocode.maps.co/geocode")
+
+  url.searchParams.append("q", locationName)
+
+  return fetch(url.toString())
+}
+
+export const useSearchLocation= () => {
+  const [coordinates, setCoordinates] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const handleSearch: ChangeEventHandler<HTMLInputElement> = (event) => {
+      event.preventDefault()
+      setLoading(true)
+  
+      geocode((event.target as HTMLInputElement).value)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(response.statusText)
+          }
+  
+          return response.json()
+        })
+        .then((data) => {
+          setCoordinates(data.results)
+        })
+        .catch((error) => {
+          console.error(error)
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
+
+  // return the search query, search results, loading state, error state, and the search handler
+  return {
+    coordinates,
+    loading,
+    handleSearch,
+  }
 }

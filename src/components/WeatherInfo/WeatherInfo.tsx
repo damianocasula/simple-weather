@@ -15,23 +15,23 @@ const ITEM_UNITS: Record<string, string> = {
   winddirection: "°",
 }
 
-export function WeatherInfo({ location }: WeatherInfoProps) {
+export function WeatherInfo({ location, loading }: WeatherInfoProps) {
   const weather = useWeatherData(location)
 
-  const loading = !weather
+  const loadingWeather = !weather || loading
 
   // TODO: get compass direction from wind direction
 
   return (
     <div className="section-wrapper">
       <h2>Weather info</h2>
-      <section className="items weather__section">
-        {loading ? (
+      <section className="items weather-section">
+        {!loadingWeather ? (
           <div className="item">Loading...</div>
         ) : (
           Object.entries(weather.current_weather).map(([key, value]) =>
             ITEM_NAMES[key] ? (
-              <div className="item weather__item" key={key}>
+              <div className="item weather-item" key={key}>
                 <div>{ITEM_NAMES[key]}</div>
                 <div>
                   {String(value)}

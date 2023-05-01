@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body {
+  font-size: 22px;
+}
+
 h1 {
   font-size: 30px;
   margin-bottom: 14px;
@@ -21,7 +25,6 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
   color: white;
   padding: 16px 0;
 }
@@ -61,23 +64,36 @@ h2 {
 }
 
 /* Location section */
-.location__section .item {
+
+.location-section .item {
   background-color: #00476b;
   border-color: #017ab7;
 }
 
+input.item.location-search {
+  background-color: #064979;
+  border-color: #0e92f1;
+
+  color: white;
+  font-size: 1rem;
+
+  &::placeholder {
+    color: #ffffffa6;
+  }
+}
+
 /* Roadmap section */
-.roadmap__section .item.done {
+.roadmap-section .item.done {
   background-color: #006c00;
   border-color: #01b801;
 }
 
-.roadmap__section .item.in-progress {
+.roadmap-section .item.in-progress {
   background-color: #6c6c00;
   border-color: #b8b801;
 }
 
-.roadmap__section .item.blocked {
+.roadmap-section .item.blocked {
   background-color: #6c0000;
   border-color: #b80101;
 }

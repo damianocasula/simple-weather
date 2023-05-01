@@ -1,5 +1,5 @@
 import { WeatherInfo } from "./components"
-import { useGeolocation, useLocationName } from "./utils"
+import { useGeolocation, useLocationName, useSearchLocation } from "./utils"
 import "./App.scss"
 
 const DEFAULT_LOCATION = {
@@ -25,6 +25,13 @@ const ROADMAP = [
 function App() {
   const location = useGeolocation() ?? DEFAULT_LOCATION
   const locationName = useLocationName(location)
+  const {
+    handleSearch,
+    // coordinates, // TODO: use coordinates to get weather for searched location
+    loading: searchLocationLoading,
+  } = useSearchLocation()
+
+  const loading = searchLocationLoading
 
   return (
     <div className="app">
@@ -35,27 +42,40 @@ function App() {
           <div className="section-wrapper">
             <h2>Location</h2>
             {location && (
-              <section className="items location__section">
-                <div className="item">
-                  <div className="label">Latitude:</div>
-                  <div className="value">{location.lat}</div>
-                </div>
-                <div className="item">
-                  <div className="label">Longitude:</div>
-                  <div className="value">{location.lon}</div>
-                </div>
+              <section className="items location-section">
+                <input
+                  type="text"
+                  id="search"
+                  placeholder="Search location..."
+                  className="item location-search"
+                  onChange={handleSearch}
+                />
+                {loading ? (
+                  <div className="item">Loading...</div>
+                ) : (
+                  <>
+                    <div className="item">
+                      <div className="label">Latitude:</div>
+                      <div className="value">{location.lat}</div>
+                    </div>
+                    <div className="item">
+                      <div className="label">Longitude:</div>
+                      <div className="value">{location.lon}</div>
+                    </div>
 
-                <div className="item">
-                  <div className="label">Location name:</div>
-                  <div className="value">
-                    {locationName ? locationName : "Unknown"}
-                  </div>
-                </div>
+                    <div className="item">
+                      <div className="label">Location name:</div>
+                      <div className="value">
+                        {locationName ? locationName : "Unknown"}
+                      </div>
+                    </div>
+                  </>
+                )}
               </section>
             )}
           </div>
 
-          <WeatherInfo location={location} />
+          <WeatherInfo location={location} loading={loading} />
 
           <div className="section-wrapper">
             <h2>Roadmap</h2>
