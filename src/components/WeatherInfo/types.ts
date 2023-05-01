@@ -1,4 +1,4 @@
-import { Coordinates } from "../../App.type"
+import { Coordinates } from "../../types"
 
 export type WeatherInfoProps = {
   location: Coordinates

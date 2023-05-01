@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { WeatherInfo } from "./components"
-import { Coordinates } from "./App.type"
-import { getUserLocation } from "./App.utils"
+import { Coordinates } from "./types"
+import { getUserLocation } from "./utils"
 import "./App.scss"
 
 const useLocationName = ({ lat, lon }: Coordinates) => {
@@ -72,18 +72,18 @@ function App() {
             <h2>Location</h2>
             {location && (
               <section className="items location__section">
-                <div className="item location__item">
-                  <div className="location__label">Latitude:</div>
-                  <div className="location__value">{location.lat}</div>
+                <div className="item">
+                  <div className="label">Latitude:</div>
+                  <div className="value">{location.lat}</div>
                 </div>
-                <div className="item location__item">
-                  <div className="location__label">Longitude:</div>
-                  <div className="location__value">{location.lon}</div>
+                <div className="item">
+                  <div className="label">Longitude:</div>
+                  <div className="value">{location.lon}</div>
                 </div>
 
-                <div className="item location__item">
-                  <div className="location__label">Location name:</div>
-                  <div className="location__value">
+                <div className="item">
+                  <div className="label">Location name:</div>
+                  <div className="value">
                     {locationName ? locationName : "Unknown"}
                   </div>
                 </div>
@@ -95,9 +95,9 @@ function App() {
 
           <div className="section-wrapper">
             <h2>Roadmap</h2>
-            <section className="items roadmap__section">
+            <section className="items">
               {ROADMAP.map((item, index) => (
-                <div className="item roadmap__item" key={index}>
+                <div className="item" key={index}>
                   {item}
                 </div>
               ))}
